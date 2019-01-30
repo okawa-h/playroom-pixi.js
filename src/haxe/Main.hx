@@ -1,4 +1,4 @@
-package ;
+package;
 
 import js.Browser.document;
 import js.jquery.JQuery;

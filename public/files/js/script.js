@@ -19,7 +19,8 @@ Manager.init = function(event) {
 	Manager._jFooter = $("#footer");
 	Manager._scrollTop = display_Window.getScrollTop();
 	Manager._background = new display_Background($("#about-bg").get(0));
-	display_Window.setEvent();
+	display_Window.setEvent("resize",Manager.onResize,true);
+	display_Window.setEvent("scroll",Manager.onScroll,true);
 };
 Manager.onResize = function(event) {
 };
@@ -849,8 +850,17 @@ var display_Window = function() { };
 display_Window.init = function() {
 	display_Window._jParent = $(window);
 };
-display_Window.setEvent = function() {
-	display_Window._jParent.on({ "resize" : Manager.onResize, "scroll" : Manager.onScroll}).trigger("resize").trigger("scroll");
+display_Window.setEvent = function(eventName,func,isTrigger) {
+	if(isTrigger == null) {
+		isTrigger = false;
+	}
+	display_Window._jParent.on(eventName,null,func);
+	if(isTrigger) {
+		display_Window.trigger(eventName);
+	}
+};
+display_Window.trigger = function(eventName) {
+	display_Window._jParent.trigger(eventName);
 };
 display_Window.getScrollTop = function() {
 	return display_Window._jParent.scrollTop();
@@ -1098,6 +1108,30 @@ jp_okawa_js_EasingTools.easeInOutBounce = function(x,t,b,c,d) {
 	}
 	return jp_okawa_js_EasingTools.easeOutBounce(x,t * 2 - d,0,c,d) * .5 + c * .5 + b;
 };
+var js_jquery_JqEltsIterator = function(j) {
+	this.i = 0;
+	this.j = j;
+};
+js_jquery_JqEltsIterator.prototype = {
+	hasNext: function() {
+		return this.i < this.j.length;
+	}
+	,next: function() {
+		return $(this.j[this.i++]);
+	}
+};
+var js_jquery_JqIterator = function(j) {
+	this.i = 0;
+	this.j = j;
+};
+js_jquery_JqIterator.prototype = {
+	hasNext: function() {
+		return this.i < this.j.length;
+	}
+	,next: function() {
+		return this.j[this.i++];
+	}
+};
 var pixi_core_renderers_webgl_filters_CurrentState = function() { };
 var utils_Utils = function() { };
 utils_Utils.getRandomRange = function(max,min) {
@@ -1111,6 +1145,18 @@ utils_Utils.getRandomDiffRange = function(number,diff) {
 };
 var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; }
+var typeofJQuery = typeof($);
+if(typeofJQuery != "undefined" && $.fn != null) {
+	$.fn.elements = function() {
+		return new js_jquery_JqEltsIterator(this);
+	};
+}
+var typeofJQuery = typeof($);
+if(typeofJQuery != "undefined" && $.fn != null) {
+	$.fn.iterator = function() {
+		return new js_jquery_JqIterator(this);
+	};
+}
 Perf.MEASUREMENT_INTERVAL = 1000;
 Perf.FONT_FAMILY = "Helvetica,Arial";
 Perf.FPS_BG_CLR = "#00FF00";

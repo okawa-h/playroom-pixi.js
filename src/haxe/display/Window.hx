@@ -20,40 +20,35 @@ class Window {
 		/* =======================================================================
 			Set Event
 		========================================================================== */
-		public static function setEvent():Void {
+		public static function setEvent(eventName:String,func:Event->Void,isTrigger:Bool=false):Void {
 
-			_jParent.on({
-				'resize':Manager.onResize,
-				'scroll':Manager.onScroll
-			}).trigger('resize').trigger('scroll');
+			_jParent.on(eventName,func);
+			if (isTrigger) trigger(eventName);
+
+		}
+
+		/* =======================================================================
+			trigger
+		========================================================================== */
+		public static function trigger(eventName:String):Void {
+
+			_jParent.trigger(eventName);
 
 		}
 
 		/* =======================================================================
 			Get Scroll Top
 		========================================================================== */
-		public static function getScrollTop():Float {
-
-			return _jParent.scrollTop();
-
-		}
+		public static function getScrollTop():Float return _jParent.scrollTop();
 
 		/* =======================================================================
 			Get Width
 		========================================================================== */
-		public static function getWidth():Float {
-
-			return _jParent.width();
-
-		}
+		public static function getWidth():Float return _jParent.width();
 
 		/* =======================================================================
 			Get Height
 		========================================================================== */
-		public static function getHeight():Float {
-
-			return _jParent.height();
-
-		}
+		public static function getHeight():Float return _jParent.height();
 
 }

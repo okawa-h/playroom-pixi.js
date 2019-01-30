@@ -15,8 +15,8 @@ class Background extends Application {
 
 	private static inline var OBJECT_LENGTH:Int = 500;
 
-	private var _graphic     :Graphics;
-	private var _containers  :Array<ShapeContainer>;
+	private var _graphic   :Graphics;
+	private var _containers:Array<ShapeContainer>;
 
 	private var _isScrolled:Bool;
 	private var _isHide    :Bool;
